@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/15 19:16:13 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/15 19:16:14 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 19:18:18 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 # define VOID_ERROR(x,y) { ft_putstr(x); ft_putstr(": "); perror(y); return ; }
 # define INT_ERROR(x) { perror(x); return (-1); }
 # define NSF_ERROR(x, y) { ft_putstr("ls: "); ft_putstr(x); ft_putendl(y); }
-# define PER_ERROR(x, y) { ft_putstr("ls: ");ft_putstr(x);ft_putendl(y); }
-# define PUT_DATE(x) { ft_putstr(" "); ft_putstr(x); ft_putstr(" "); }
+# define PER_ERROR(x, y) ft_putstr("ls: "), ft_putstr(x), ft_putendl(y)
+# define PUT_DATE(x) ft_putstr(" "), ft_putstr(x), ft_putchar(' ')
 # define PUT_NAME(x) { ft_putstr("\n");ft_putstr(x);ft_putendl(":"); }
 # define PUT_NBR_STR(x, y) { ft_putnbr(x); ft_putstr(y); }
+# define CONTINUE "/Applications/Unity/Documentation/ScriptReference"
 # include "../libft/inc/libft.h"
 # include <time.h>
 # include <sys/xattr.h>

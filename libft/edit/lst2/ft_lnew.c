@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/15 19:16:02 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/15 19:16:03 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 19:27:00 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static char		is_ninja(char *str)
 
 static t_lst	*ft_aux2(struct stat *b, t_lst *new)
 {
-	new->user2 = b->st_uid;
-	new->group2 = b->st_gid;
-	new->ssize = b->st_size;
-	new->mode2 = b->st_rdev;
+	new->user2 = b->st_uid ? (int)(b->st_uid) : 0;
+	new->group2 = b->st_gid ? (int)(b->st_gid) : 0;
+	new->mode2 = b->st_rdev ? (int)(b->st_rdev) : 0;
+	new->ssize = b->st_size > -1 ? (int)b->st_size : 0;
 	if (new->dir)
 		new->is_hidden = ((new->file)[0] == '.' &&
 							(new->file)[1] != '/') ? 'a' : '\0';
@@ -80,23 +80,21 @@ t_lst			*ft_lnew(struct dirent *d, struct stat *b, char *dir)
 
 	if (!(new = malloc(sizeof(t_lst))))
 		return (NULL);
-	pwd = getpwuid(b->st_uid);
-	if (pwd->pw_name)
-	{
-		if (!(new->user = ft_strdup(pwd->pw_name)))
-			return (NULL);
-	}
-	else
-		new->user = ft_strnew(1);
-	grp = getgrgid(b->st_gid);
-	if (grp->gr_name)
-	{
-		if (!(new->group = ft_strdup(grp->gr_name)))
-			return (NULL);
-	}
-	else
-		new->group = ft_strnew(1);
 	new->next = NULL;
 	new->prev = NULL;
+	if (!d || !b || !dir)
+		return (NULL);
+	pwd = getpwuid(b->st_uid);
+	grp = getgrgid(b->st_gid);
+	if (!pwd || !grp)
+		return (NULL);
+	if (pwd->pw_name)
+		new->user = ft_strdup(pwd->pw_name);
+	else
+		new->user = ft_strnew(1);
+	if (grp->gr_name)
+		new->group = ft_strdup(grp->gr_name);
+	else
+		new->group = ft_strnew(1);
 	return (ft_aux1(new, dir, d, b));
 }

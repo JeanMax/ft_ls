@@ -6,7 +6,7 @@
 /*   By: mcanal <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/11 03:58:41 by mcanal            #+#    #+#             */
-/*   Updated: 2014/11/22 14:26:31 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 16:49:39 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_lst *ft_llast(t_lst **alst)
 {
 	t_lst	*tmp;
 
-	if (!alst)
+	if (!*alst)
 		return (NULL);
 	tmp = *alst;
 	while (tmp->next != NULL)

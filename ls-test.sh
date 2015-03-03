@@ -6,7 +6,7 @@
 #    By: mcanal <zboub@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/06 11:49:07 by mcanal            #+#    #+#              #
-#    Updated: 2015/02/06 19:09:56 by mcanal           ###   ########.fr        #
+#    Updated: 2015/03/03 12:48:53 by mcanal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,18 +25,18 @@ fi
 rm auteur_test;
 echo "";
 
-norminette * > norm_test;
-cat norm_test |	grep -v "Norme: " | grep -v "Warning: " > norm_test2;
-FILE_SIZE=$(du norm_test2 | awk '{ print $1 }');
-if [ "$FILE_SIZE" = 0 ]; then
-	echo "\033[37;01mTesting norme \033[32;01mOK\033[0m";
-else
-	echo "\033[37;01mTesting norme \033[31;01mKO\033[0m";
-	cat norm_test;
-	fi
-rm norm_test;
-rm norm_test2;
-echo "";
+#norminette * > norm_test;
+#cat norm_test |	grep -v "Norme: " | grep -v "Warning: " > norm_test2;
+#FILE_SIZE=$(du norm_test2 | awk '{ print $1 }');
+#if [ "$FILE_SIZE" = 0 ]; then
+#	echo "\033[37;01mTesting norme \033[32;01mOK\033[0m";
+#else
+#	echo "\033[37;01mTesting norme \033[31;01mKO\033[0m";
+#	cat norm_test;
+#	fi
+#rm norm_test;
+#rm norm_test2;
+#echo "";
 
 make re;
 

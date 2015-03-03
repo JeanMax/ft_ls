@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/15 19:18:13 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/15 19:18:14 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 19:25:12 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	fill_list(struct dirent *s_d, char *s, char *a, t_env *e)
 
 	if (lstat(s, &s_buf) < 0)
 		VOID_ERROR("lstat", s);
-	go = '\0';
 	go = (a && !(ft_strcmp(s_d->d_name, get_file(a)))) ? 'z' : '\0';
 	if (!a || go)
 	{
@@ -55,34 +54,47 @@ static void	fill_list(struct dirent *s_d, char *s, char *a, t_env *e)
 			e->a_l = ft_lnew(s_d, &s_buf, s);
 		else
 			ft_ladd(&e->a_l, ft_lnew(s_d, &s_buf, s));
-		if (a)
+		if (a && e->a_l)
 			e->a_l->file = ft_strdup(a);
 	}
+}
+
+static void	read_loop(struct dirent *s_d, char *alone, char *str, t_env *e)
+{
+	char			*s;
+	char			*d;
+	char			*f;
+
+	if (!ft_strcmp(str, "."))
+		s = ft_strjoin("./", s_d->d_name);
+	else if (str[0] == '/')
+	{
+		f = ft_strjoin("/", s_d->d_name);
+		d = ft_strjoin(str, f), ft_memdel((void *)&f);
+		s = ft_strjoin("/", d), ft_memdel((void *)&d);
+	}
+	else
+	{
+		f = ft_strjoin("/", s_d->d_name);
+		d = ft_strjoin(str, f), ft_memdel((void *)&f);
+		s = ft_strjoin("./", d), ft_memdel((void *)&d);
+	}
+	if (ft_strstr(s, CONTINUE))
+		return ;
+	fill_list(s_d, s, alone, e), ft_memdel((void *)&s);
 }
 
 void		read_dir(char *str, t_env *e, int root, char *alone)
 {
 	DIR				*dir;
 	struct dirent	*s_d;
-	char			*s;
-	t_lst			*to_free;
 
 	e->a_l = NULL;
 	if (!(dir = opendir(str)))
 		VOID_ERROR("ls", str);
 	while ((s_d = readdir(dir)) != NULL)
-	{
-		if (!ft_strcmp(str, "."))
-			s = ft_strjoin("./", s_d->d_name);
-		else if (str[0] == '/')
-			s = ft_strjoin("/", ft_strjoin(str, ft_strjoin("/", s_d->d_name)));
-		else
-			s = ft_strjoin("./", ft_strjoin(str, ft_strjoin("/", s_d->d_name)));
-		fill_list(s_d, s, alone, e);
-	}
-	to_free = e->a_l;
-	print_list(e, root, alone);
-	e->flag_l ? NULL : ft_lclean(&(to_free));
+		read_loop(s_d, alone, str, e);
 	if (closedir(dir) == -1)
 		VOID_ERROR("closedir", str);
+	print_list(e, root, alone), ft_lclean(&(e->a_l)), e->a_l = NULL;
 }

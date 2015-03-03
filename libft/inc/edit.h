@@ -6,7 +6,7 @@
 /*   By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/09 03:39:14 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/06 19:04:59 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 15:31:03 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,21 @@ struct	s_lst
 	char	*file;
 	char	*dir;
 	char	*user;
-	int		user2;
-	int		group2;
 	char	*group;
 	long	date;
+	int		user2;
+	int		group2;
 	int		mode;
 	int		mode2;
 	int		size;
+	int		block;
+	int		link;
 	char	is_hidden;
 	char	is_ninja;
 	char	is_dir;
-	int		block;
-	int		link;
+	char	ssize;
 	t_lst	*next;
 	t_lst	*prev;
-	char	ssize;
 };
 
 /*

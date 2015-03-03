@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/15 19:17:18 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/15 19:17:19 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 18:39:29 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 char		*convert_date(time_t t_file)
 {
 	char		*date2;
+	char		*tmp;
 	char		*date;
 	int			index;
-	long int	timemod;
 
-	timemod = (t_file / 31557600) + 1970;
 	if (!(date = ft_strsub(ctime(&t_file), 4, ft_strlen(ctime(&t_file)) - 4)))
 		return (NULL);
 	index = ft_strlen(date);
@@ -27,13 +26,18 @@ char		*convert_date(time_t t_file)
 		index--;
 	date2 = ft_strnew(index);
 	ft_strncpy(date2, date, index + 1);
+	ft_memdel((void *)&date);
 	if (t_file < (time(NULL) - 15897287) || t_file > time(NULL))
 	{
-		if (!(date2 = ft_strsub(date2, 0, ft_strlen(date2) - 5)))
-			return (0);
-		if (!(date2 = ft_strjoin(date2, ft_strjoin(" ", ft_itoa(timemod)))))
-			return (0);
+		date = ft_strsub(date2, 0, ft_strlen(date2) - 5);
+		ft_memdel((void *)&date2);
+		date2 = ft_itoa((t_file / 31557600) + 1970);
+		tmp = ft_strjoin(" ", date2);
+		ft_memdel((void *)&date2);
+		date2 = ft_strjoin(date, tmp);
+		ft_memdel((void *)&tmp), ft_memdel((void *)&date);
 	}
+	date2[12] = '\0';
 	return (date2);
 }
 
@@ -68,8 +72,8 @@ char		*lnk(t_lst *tmp)
 {
 	char	*link_name;
 	char	*ret;
-	char	*to_free1;
-	char	*to_free2;
+	char	*tmp1;
+	char	*tmp2;
 	ssize_t	link_size;
 
 	if (!(link_name = malloc(tmp->ssize + 1)))
@@ -78,12 +82,12 @@ char		*lnk(t_lst *tmp)
 		return (NULL);
 	link_size = readlink(tmp->dir, link_name, tmp->ssize + 1);
 	link_name[link_size] = '\0';
-	to_free1 = ret;
-	to_free2 = ft_strjoin(" -> ", ft_strjoin(link_name, "\n"));
-	ret = ft_strjoin(tmp->file, to_free2);
+	tmp1 = ft_strjoin(link_name, "\n");
+	tmp2 = ft_strjoin(" -> ", tmp1);
+	ret = ft_strjoin(tmp->file, tmp2);
+	ft_memdel((void *)&tmp1);
+	ft_memdel((void *)&tmp2);
 	ft_memdel((void *)&link_name);
-	ft_memdel((void *)&to_free1);
-	ft_memdel((void *)&to_free2);
 	return (ret);
 }
 
@@ -92,21 +96,16 @@ char		*convert_dirname(char *str)
 	char	*dir2;
 	int		i;
 
-	i = 0;
 	dir2 = ft_strnew(ft_strlen(str) + 1);
+	i = 0;
 	while (str[i] != '\0')
-	{
 		if (str[2] == '.' && str[3] == '/')
 		{
 			dir2[i] = str[i + 2];
 			i++;
 		}
 		else
-		{
 			return (str);
-			break ;
-		}
-	}
 	return (dir2);
 }
 

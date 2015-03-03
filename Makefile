@@ -6,7 +6,7 @@
 #    By: mcanal <zboub@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/15 19:01:48 by mcanal            #+#    #+#              #
-#    Updated: 2015/02/15 19:02:41 by mcanal           ###   ########.fr        #
+#    Updated: 2015/03/03 12:50:57 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,30 +25,23 @@ CC =    gcc
 RM =    rm -f
 CFLAGS =  -Wall -Wextra -Werror -I./inc/
 
-.PHONY: all lib soft debug optimize clean fclean zclean re
+.PHONY: all lib soft clean fclean zclean re brute
 
 all:
 	@make -C libft
 	@$(MAKE) $(NAME)
 
 $(NAME): $(SRCO) $(LIB) $(INC)
-	@$(CC) $(CFLAGS) $(SRCO) $(LIB) -o $@
+	$(CC) $(CFLAGS) $(SRCO) $(LIB) -o $@
 
 $(O_DIR)/%.o: %.c
 	@$(RM) $(NAME)
-	@$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 soft:
 	@$(RM) $(NAME)
-	@$(CC) $(SRCC) $(LIB) -o $(NAME)
+	@$(CC) -I./inc/ $(SRCC) $(LIB) -o $(NAME)
 	@./$(NAME)
-
-debug: re
-	@$(CC) $(CFLAGS) -ggdb $(SRCO) $(LIB) -o $(NAME)
-	@gdb $(NAME)
-
-optimize: re
-	@$(CC) $(CFLAGS) -O2 $(SRCO) $(LIB) -o $(NAME)
 
 clean:
 	@$(RM) $(SRCO)
@@ -60,3 +53,5 @@ zclean: fclean
 	@make -C libft fclean
 
 re: fclean all
+
+brute: zclean all

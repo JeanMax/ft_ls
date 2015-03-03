@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/15 19:15:28 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/15 19:15:31 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/03 16:02:06 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,5 @@ int		atr(char *str)
 {
 	if (listxattr(str, NULL, 0, XATTR_NOFOLLOW) > 0)
 		return (1);
-	else
-		return (0);
+	return (0);
 }
